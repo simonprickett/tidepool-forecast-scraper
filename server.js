@@ -95,6 +95,27 @@ let currentTidePools = [
     }    
 ];
 
+// Scrape tide pool data for a specific location
+function scrapeData(location) {
+    return new Promise((resolve, reject) => {
+        console.log(`Scraping data for ${location.city}, ${location.state}.`);
+        resolve(location.city);
+    });
+}
+
+// Load/re-load tide pool data
+async function refreshTidePoolData() {
+    console.log('Refreshing tide pool data...');
+
+    const locationsToScrape = require('./locations.json');
+    const scrapePromises = locationsToScrape.map(scrapeData);
+
+    const results = await Promise.all(scrapePromises);
+
+    console.log('Tide pool data refreshed.');
+    console.log(JSON.stringify(results));
+}
+
 // Configure server to listen on all IP addresses for this machine, and configured port number.
 server.connection({
     host: '0.0.0.0',
@@ -126,7 +147,8 @@ server.route({
     }
 })
 
-// TODO load tidepool data before starting server...
+// This will take a short while to load data, but go ahead and start server anyway...
+refreshTidePoolData();
 
 // Start up the server and listen on the configured port.
 server.start((err) => {
