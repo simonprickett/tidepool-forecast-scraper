@@ -15,8 +15,23 @@
         <div class="container">
         <h1>tidepool-forecast-scraper</h1>
         <hr/>
+        <div id="contentArea">
+            <!-- Content will be populated here dynamically. -->
+        </div>
         <hr/>
         <p>A demo project by <a href="http://www.crudworks.org" target="_blank">Simon Prickett</a>, 2018 | Source is on <a href="https://github.com/simonprickett/tidepool-forecast-scraper" target="_blank">GitHub</a>.</p>
         </div>
+        <!-- Handlebars Templates -->
+        <script id="tidepools-template" type="text/x-handlebars-template">
+            {{#each tidePools}}
+                <!-- TODO render tidepool object -->
+            {{else}}
+                <div class="alert alert-danger" role="alert">Sorry, there appears to be no tide pool data right now, please try again later :(</div>
+            {{/each}}
+        </script>
+
+        <script id="error-template" type="text/x-handlebars-template">
+            <div class="alert alert-danger" role="alert">Sorry, we&apos;re having some technical issues right now, please try again later :(</div>
+        </script>
     </body>
 </html>
