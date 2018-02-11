@@ -23,6 +23,14 @@ server.route({
 	}
 });
 
+server.route({
+    method: 'GET',
+    path: '/api/tidepools',
+    handler: (request, reply) => {
+        reply({}).code(200);
+    }
+})
+
 server.start((err) => {
     if (err) {
         throw err;
