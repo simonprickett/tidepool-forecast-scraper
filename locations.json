@@ -1,0 +1,22 @@
+[
+    {
+        "city": "Half Moon Bay",
+        "state": "CA",
+        "tideForecastKeyName": "Half-Moon-Bay-California"
+    },
+    {
+        "city": "Huntington Beach",
+        "state": "CA",
+        "tideForecastKeyName": "Huntington-Beach"
+    },
+    {
+        "city": "Providence",
+        "state": "RI",
+        "tideForecastKeyName": "Providence-Rhode-Island"
+    },
+    {
+        "city": "Wrightsville Beach",
+        "state": "NC",
+        "tideForecastKeyName": "Wrightsville-Beach-North-Carolina"
+    }    
+]
