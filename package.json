@@ -1,0 +1,28 @@
+{
+  "name": "tidepool-forecast-scraper",
+  "version": "0.0.1",
+  "description": "Tidepool Forecast Scraper Exercise",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonprickett/tidepool-forecast-scraper.git"
+  },
+  "keywords": [
+    "tidepool",
+    "scraper",
+    "challenge"
+  ],
+  "author": "Simon Prickett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simonprickett/tidepool-forecast-scraper/issues"
+  },
+  "homepage": "https://github.com/simonprickett/tidepool-forecast-scraper#readme",
+  "dependencies": {
+    "hapi": "^16.6.2",
+    "inert": "^4.2.1"
+  }
+}
