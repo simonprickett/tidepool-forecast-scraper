@@ -3,6 +3,7 @@
 // Require dependencies.
 const Hapi = require('hapi');
 const Inert = require('inert');
+const osmosis = require('osmosis');
 
 // Globals.
 const server = new Hapi.Server();
@@ -99,7 +100,24 @@ let currentTidePools = [
 function scrapeData(location) {
     return new Promise((resolve, reject) => {
         console.log(`Scraping data for ${location.city}, ${location.state}.`);
-        resolve(location.city);
+        osmosis
+            .get(`https://www.tide-forecast.com/locations/${location.tideForecastKeyName}/tides/latest`)
+            .find('.tide-events table')
+            .find('tr')
+            .set({
+                date: 'td[0]',
+                time: 'td[1]',
+                timezone: 'td[2]',
+                meters: 'td[3]',
+                feet: 'td[4]',
+                tide: 'td[5]'
+            })
+            .data((data) => {
+                // TODO filter for low tides between sunrise and sunset...
+                console.log(data);
+                // TODO return the right thing...
+                resolve(location.city);
+            });
     });
 }
 
