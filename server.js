@@ -1,7 +1,9 @@
 const Hapi = require('hapi');
 const Inert = require('inert');
+const schedule = require('node-schedule');
 
 const server = new Hapi.Server();
+let currentTidePools = {};
 
 server.connection({
     host: '0.0.0.0',
@@ -27,7 +29,7 @@ server.route({
     method: 'GET',
     path: '/api/tidepools',
     handler: (request, reply) => {
-        reply({}).code(200);
+        reply(currentTidePools).code(200);
     }
 })
 
