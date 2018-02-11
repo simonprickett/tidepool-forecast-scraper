@@ -1,16 +1,22 @@
+'use strict';
+
+// Require dependencies.
 const Hapi = require('hapi');
 const Inert = require('inert');
 const schedule = require('node-schedule');
 
+// Globals.
 const server = new Hapi.Server();
-let currentTidePools = {};
+// Basic way of caching scraped data.
+let currentTidePools = [];
 
+// Configure server to listen on all IP addresses for this machine, and configured port number.
 server.connection({
     host: '0.0.0.0',
     port: 3000 || process.env.PORT
 });
 
-// Serving of static content
+// Serving of static content via Inert.
 server.register(Inert, () => {});
 
 server.route({
@@ -25,14 +31,19 @@ server.route({
 	}
 });
 
+// API route for front end clients to get tide pool data.
 server.route({
     method: 'GET',
     path: '/api/tidepools',
     handler: (request, reply) => {
-        reply(currentTidePools).code(200);
+        // Return whatever the current cached tide pool data is.
+        reply({ tidePools: currentTidePools }).code(200);
     }
 })
 
+// TODO load tidepool data before starting server...
+
+// Start up the server and listen on the configured port.
 server.start((err) => {
     if (err) {
         throw err;
