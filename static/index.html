@@ -13,8 +13,9 @@
     </head>
     <body>
         <div class="container">
-        <h1>tidepool-forecast-scraper</h1>
-        <hr/>
+        <div class="page-header">
+            <h1>tidepool-forecast-scraper</h1>
+        </div>
         <div id="contentArea">
             <!-- Content will be populated here dynamically. -->
         </div>
@@ -24,7 +25,36 @@
         <!-- Handlebars Templates -->
         <script id="tidepools-template" type="text/x-handlebars-template">
             {{#each tidePools}}
-                <!-- TODO render tidepool object -->
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>{{city}}, {{state}}</h4></div>
+                    <div class="panel-body">
+                        {{#each lowTides}}
+                            <h5>{{date}}</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Height (ft)</th>
+                                        <th>Height (m)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each tides}}
+                                        <tr>
+                                            <td class="col-md-3">{{time}}</td>
+                                            <td>{{height.feet}}</td>
+                                            <td>{{height.meters}}</td>
+                                        </tr>
+                                    {{else}}
+                                        <tr><td class="col-md-3">No information available at this time.</td></tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        {{else}}
+                            No information available at this time.
+                        {{/each}}        
+                    </div>
+                </div>
             {{else}}
                 <div class="alert alert-danger" role="alert">Sorry, there appears to be no tide pool data right now, please try again later :(</div>
             {{/each}}

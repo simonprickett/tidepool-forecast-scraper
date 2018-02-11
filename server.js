@@ -8,7 +8,92 @@ const schedule = require('node-schedule');
 // Globals.
 const server = new Hapi.Server();
 // Basic way of caching scraped data.
-let currentTidePools = [];
+let currentTidePools = [
+    {
+        city: 'Half Moon Bay',
+        state: 'CA',
+        lowTides: [
+            {
+                date: 'Saturday 10th February',
+                tides: [
+                    {
+                        time: '3:33PM PST',
+                        height: {
+                            meters: -0.03,
+                            feet: -0.1
+                        }
+                    }
+                ]
+            },
+            {
+                date: 'Sunday 11th February',
+                tides: [
+                    {
+                        time: '10:27AM PST',
+                        height: {
+                            meters: -0.1,
+                            feet: -0.3
+                        }
+                    },
+                    {
+                        time: '4:35PM PST',
+                        height: {
+                            meters: -0.1,
+                            feet: -0.3
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        city: 'Huntington Beach',
+        state: 'CA',
+        lowTides: [
+            {
+                date: 'Saturday 10th February',
+                tides: [
+                    {
+                        time: '3:33PM EST',
+                        height: {
+                            meters: -0.03,
+                            feet: -0.1
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        city: 'Providence',
+        state: 'RI',
+        lowTides: [
+        ]
+    },
+    {
+        city: 'Wrightsville Beach',
+        state: 'NC',
+        lowTides: [
+            {
+                date: 'Saturday 10th February',
+                tides: [
+                    {
+                        time: '3:33PM EST',
+                        height: {
+                            meters: -0.03,
+                            feet: -0.1
+                        }
+                    }
+                ]
+            },
+            {
+                date: 'Sunday 11th February',
+                tides: [
+                ]
+            }
+        ]
+    }    
+];
 
 // Configure server to listen on all IP addresses for this machine, and configured port number.
 server.connection({
