@@ -3,10 +3,10 @@
 // Require dependencies.
 const Hapi = require('hapi');
 const Inert = require('inert');
-const schedule = require('node-schedule');
 
 // Globals.
 const server = new Hapi.Server();
+
 // Basic way of caching scraped data.
 let currentTidePools = [
     {
@@ -147,9 +147,6 @@ server.route({
     }
 })
 
-// This will take a short while to load data, but go ahead and start server anyway...
-refreshTidePoolData();
-
 // Start up the server and listen on the configured port.
 server.start((err) => {
     if (err) {
@@ -157,4 +154,11 @@ server.start((err) => {
     }
 
     console.log(`tidepool-forecast-scraper server running at ${server.info.uri}.`);
+
+    // This will take a short while to load data, but if user loads page too fast, front
+    // end will render gracefully anyway.
+    refreshTidePoolData();
+
+    // Start up scheduled data refresh.
+    setInterval(refreshTidePoolData, 10000);
 });
