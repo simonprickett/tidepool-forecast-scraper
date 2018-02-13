@@ -100,23 +100,72 @@ let currentTidePools = [
 function scrapeData(location) {
     return new Promise((resolve, reject) => {
         console.log(`Scraping data for ${location.city}, ${location.state}.`);
+
+        const thisCityTides = {
+            city: location.city,
+            state: location.state,
+            lowTides: []
+        };
+
         osmosis
             .get(`https://www.tide-forecast.com/locations/${location.tideForecastKeyName}/tides/latest`)
             .find('.tide-events table')
             .find('tr')
             .set({
-                date: 'td[0]',
-                time: 'td[1]',
-                timezone: 'td[2]',
-                meters: 'td[3]',
-                feet: 'td[4]',
-                tide: 'td[5]'
+                date: 'td[@class="date"]',
+                time: 'td[@class="time tide"]',
+                timezone: 'td[@class="time-zone"]',
+                meters: 'td[@class="level metric"]',
+                feet: 'td[@class="level"]',
+                tide: 'td[@class="tide"]',
+                phase: 'td[6]'
             })
             .data((data) => {
                 // TODO filter for low tides between sunrise and sunset...
-                console.log(data);
-                // TODO return the right thing...
-                resolve(location.city);
+                // YOU NEED TO CHECK FOR DATE BEFORE FILTERING!!
+                console.log(`RAW --> ${location.city} --> ${JSON.stringify(data)}`);
+                if ((data.tide) && (data.tide === 'Low Tide')) {
+                    console.log(`LOW --> ${location.city} --> ${JSON.stringify(data)}`);
+                    // Check if we have tides for this day already?
+                    let appendedToExistingDay = false;
+
+                    for (const tideDay of thisCityTides.lowTides) {
+                        if (tideDay.date === data.date) {
+                            // We have low tides for this date already, so append this newly found one.
+                            tideDay.tides.push({
+                                time: data.time,
+                                height: {
+                                    meters: data.meters,
+                                    feet: data.feet
+                                }
+                            });
+
+                            appendedToExistingDay = true;
+                        }
+                    }
+
+                    if (! appendedToExistingDay) {
+                        // We did not have low tides for this data already, so create a new object for this newly found one.
+                        const newTideDay = {
+                            date: data.date,
+                            tides: []
+                        };
+
+                        newTideDay.tides.push({
+                            time: data.time,
+                            height: {
+                                meters: data.meters,
+                                feet: data.feet
+                            }
+                        });
+
+                        thisCityTides.lowTides.push(newTideDay);
+                    }
+                }
+            })
+            .done(() => {
+                console.log(`All done for ${location.city}`);
+                resolve(thisCityTides);
             });
     });
 }
@@ -178,5 +227,5 @@ server.start((err) => {
     refreshTidePoolData();
 
     // Start up scheduled data refresh.
-    setInterval(refreshTidePoolData, 10000);
+    //setInterval(refreshTidePoolData, 10000);
 });
